@@ -4,13 +4,13 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { useRouter } from "next/navigation";
 import { FaUserAlt } from "react-icons/fa";
-// import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { toast } from "react-hot-toast";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 
-// import useAuthModal from "@/hooks/useAuthModal";
-// import { useUser } from "@/hooks/useUser";
+import useAuthModal from "@/hooks/useAuthModal";
+import { useUser } from "@/hooks/useUser";
 // import usePlayer from "@/hooks/usePlayer";
 
 import Button from "./Button";
@@ -26,20 +26,23 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   // const player = usePlayer();
   const router = useRouter();
-  // const authModal = useAuthModal();
+  const authModal = useAuthModal();
 
-  // const supabaseClient = useSupabaseClient();
-  // const { user } = useUser();
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
 
-  // const handleLogout = async () => {
-  //   const { error } = await supabaseClient.auth.signOut();
-  //   player.reset();
-  //   router.refresh();
+  const handleLogout = async () => {
+    // 退出登录
+    const { error } = await supabaseClient.auth.signOut();
+    // player.reset();
+    router.refresh();
 
-  //   if (error) {
-  //     toast.error(error.message);
-  //   }
-  // }
+    if (error) {
+      toast.error(error.message);
+    } else{
+      toast.success("Log out!")
+    }
+  }
 
   return (
     <div
@@ -119,27 +122,30 @@ const Header: React.FC<HeaderProps> = ({
             <BiSearch className="text-black" size={20} />
           </button>
         </div>
+        {/* 用户登录栏 */}
         <div className="flex justify-between items-center gap-x-4">
-          {/* {user ? ( */}
-            {/* <div className="flex gap-x-4 items-center">
+          {user ? (
+            <div className="flex gap-x-4 items-center">
               <Button 
-                // onClick={handleLogout} 
+                onClick={handleLogout} 
                 className="bg-white px-6 py-2"
               >
                 Logout
               </Button>
+              {/* 用户头像 */}
               <Button 
                 onClick={() => router.push('/account')} 
                 className="bg-white"
               >
                 <FaUserAlt />
               </Button>
-            </div> */}
-          {/* ) : ( */}
+            </div> 
+          ) : (
+            // 没登录
             <>
               <div>
                 <Button 
-                  // onClick={authModal.onOpen} 
+                  onClick={authModal.onOpen} 
                   className="
                     bg-transparent 
                     text-neutral-300 
@@ -151,14 +157,14 @@ const Header: React.FC<HeaderProps> = ({
               </div>
               <div>
                 <Button 
-                  // onClick={authModal.onOpen} 
+                  onClick={authModal.onOpen} 
                   className="bg-white px-6 py-2"
                 >
                   Log in
                 </Button>
               </div>
             </>
-          {/* )} */}
+          )}
         </div>
       </div>
       {/* 标题 */}

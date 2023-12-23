@@ -20,6 +20,7 @@ const AuthModal = () => {
   
   const supabaseClient = useSupabaseClient();
 
+  // 如果登录了关闭modal
   useEffect(() => {
     if (session) {
       router.refresh();
@@ -40,9 +41,11 @@ const AuthModal = () => {
       isOpen={isOpen} 
       onChange={onChange} 
     >
+      {/* 登录组件样式 */}
       <Auth
         supabaseClient={supabaseClient}
         providers={['github']}
+        // 可以发送邮件去邮箱
         magicLink={true}
         appearance={{
           theme: ThemeSupa,
