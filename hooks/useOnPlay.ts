@@ -5,6 +5,7 @@ import usePlayer from "./usePlayer";
 import useAuthModal from "./useAuthModal";
 import { useUser } from "./useUser";
 
+// 改变播放器状态
 const useOnPlay = (songs: Song[]) => {
   const player = usePlayer();
   // const subscribeModal = useSubscribeModal();
