@@ -4,9 +4,10 @@ import { TbPlaylist } from "react-icons/tb";
 import { AiOutlinePlus } from "react-icons/ai";
 
 // import { Song } from "@/types";
-// import useUploadModal from "@/hooks/useUploadModal";
-// import { useUser } from "@/hooks/useUser";
-// import useAuthModal from "@/hooks/useAuthModal";
+import useUploadModal from "@/hooks/useUploadModal";
+// 不是supabase的hook
+import { useUser } from "@/hooks/useUser";
+import useAuthModal from "@/hooks/useAuthModal";
 // import useSubscribeModal from "@/hooks/useSubscribeModal";
 // import useOnPlay from "@/hooks/useOnPlay";
 
@@ -17,26 +18,27 @@ import { AiOutlinePlus } from "react-icons/ai";
 // }
 
 const Library = () => {
-  // const { user, subscription } = useUser();
-  // const uploadModal = useUploadModal();
-  // const authModal = useAuthModal();
+  const { user, subscription } = useUser();
+  const uploadModal = useUploadModal();
+  const authModal = useAuthModal();
   // const subscribeModal = useSubscribeModal();
 
   // const onPlay = useOnPlay(songs);
 
-  // const onClick = () => {
-  //   if (!user) {
-  //     return authModal.onOpen();
-  //   }
+  // 按+号,如果没登录就弹框
+  const onClick = () => {
+    if (!user) {
+      return authModal.onOpen();
+    }
 
   //   if (!subscription) {
   //     return subscribeModal.onOpen();
   //   }
 
-  //   return uploadModal.onOpen();
-  // }
+    return uploadModal.onOpen();
+  }
 
-  return ( 
+  return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between px-5 pt-4">
         <div className="inline-flex items-center gap-x-2">
@@ -45,9 +47,9 @@ const Library = () => {
             Your Library
           </p>
         </div>
-        <AiOutlinePlus 
-          // onClick={onClick} 
-          size={20} 
+        <AiOutlinePlus
+          onClick={onClick} 
+          size={20}
           className="
             text-neutral-400 
             cursor-pointer 
@@ -67,7 +69,7 @@ const Library = () => {
         list of songs
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default Library;
